@@ -9,11 +9,12 @@ export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {}
 
     @Get()
-    getAll(@Res() res, @Req() req ): Movie[] {
+    getAll(): Movie[] {
         return this.moviesService.getAll();
     }
     @Get(':id')
     getOne(@Param('id') mId: number ): Movie {
+        console.log(typeof mId);
         return this.moviesService.getOne(mId);
     }
     @Get('search')
