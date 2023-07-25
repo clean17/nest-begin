@@ -1,4 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { CreateMovieDTO } from './dto/create-movie.dto';
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 import { Movie } from './entities/movie.entity';
 import { MoviesService } from './movies.service';
 
@@ -7,11 +9,11 @@ export class MoviesController {
     constructor(private readonly moviesService: MoviesService) {}
 
     @Get()
-    getAll(): Movie[] {
+    getAll(@Res() res, @Req() req ): Movie[] {
         return this.moviesService.getAll();
     }
     @Get(':id')
-    getOne(@Param('id') mId: string ): Movie {
+    getOne(@Param('id') mId: number ): Movie {
         return this.moviesService.getOne(mId);
     }
     @Get('search')
@@ -20,12 +22,12 @@ export class MoviesController {
     }
 
     @Post()
-    create(@Body() movieData) {
+    create(@Body() movieData: CreateMovieDTO) {
         return this.moviesService.create(movieData);
     }
 
     @Patch(':id')
-    path(@Param('id') movieId: string, @Body() updateData) {
+    path(@Param('id') movieId: number, @Body() updateData: UpdateMovieDTO) {
         // return {
         //     updateMovie: movieId,
         //     ...updateData,
@@ -34,7 +36,7 @@ export class MoviesController {
     }
 
     @Delete(':id')
-    remove(@Param('id') movidId: string): boolean{
+    remove(@Param('id') movidId: number): boolean{
         return this.moviesService.deleteOne(movidId);
     }
 }
